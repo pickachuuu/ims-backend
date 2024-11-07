@@ -41,8 +41,6 @@ const register = async (req, res) => {
     }
 };
 
-
-router.post('/register', register);
 const login = (req, res) => {
 };
 
