@@ -170,6 +170,16 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      password: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      roleID: {
+        type: Sequelize.INTEGER('0', '1'),
+        allowNull: false,
+        defaultValue: 0,
+        comment: '0: Admin, 1: User',
+      },
       first_name: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -183,6 +193,10 @@ module.exports = {
         allowNull: false,
       },
       createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
       },
