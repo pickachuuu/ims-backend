@@ -1,5 +1,7 @@
 const router = require('express').Router();
 const { User } = require('../models');
+const { validatePassword } = require('../utils/passwordUtils');
+const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {
     try{
@@ -41,7 +43,46 @@ const register = async (req, res) => {
     }
 };
 
-const login = (req, res) => {
+const login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({ 
+            where: { email }
+        });
+
+        if (!user) {
+            return res.status(401).json({ 
+                message: 'Invalid email or password' 
+            });
+        }
+
+        const isValidPassword = await validatePassword(password, user.password);
+        if (!isValidPassword) {
+            return res.status(401).json({ 
+                message: 'Invalid email or password' 
+            });
+        }
+
+        const token = jwt.sign(
+            { 
+                name: user.first_name,
+                roleID: user.roleID 
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+
+        res.status(200).json({
+            message: 'Login successful',
+            token
+        });
+
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ 
+            message: 'Internal server error' 
+        });
+    }
 };
 
 module.exports = {
