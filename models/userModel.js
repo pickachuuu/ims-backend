@@ -51,10 +51,6 @@ module.exports = (sequelize) => {
         model: 'businesses',
         key: 'businessID'
       }
-    },
-    deletedAt: {
-      type: DataTypes.DATE,
-      allowNull: true
     }
   }, {
     hooks: {
