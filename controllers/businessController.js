@@ -29,7 +29,7 @@ const createBusiness = async (req, res) => {
         
         const newToken = jwt.sign(
             { 
-                id: updatedUser.userID,
+                userID: updatedUser.userID,
                 email: updatedUser.email,
                 businessID: business.businessID,
                 roleID: updatedUser.roleID
