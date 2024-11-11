@@ -129,6 +129,18 @@ module.exports = {
           min: 0,
         },
       },
+      price: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+      },
+      businessID: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'businesses',
+          key: 'businessID'
+        }
+      },
       categoryID: {
         type: Sequelize.INTEGER,
         references: {
