@@ -3,16 +3,16 @@ const router = express.Router();
 const { protect } = require('../middlewares/authMiddleware');
 const { 
     createProduct,
-    removeProduct
+    removeProduct,
     // getProducts, 
-    // updateProduct, 
+    updateProduct 
     // deleteProduct 
 } = require('../controllers/productController');
 
 router.post('/create', protect, createProduct);
-router.delete('/:productID', protect, removeProduct);
+router.delete('/delete/:productID', protect, removeProduct);
+router.put('/update/:productID', protect, updateProduct);
 // router.get('/', protect, getProducts);
-// router.put('/:productID', protect, updateProduct);
 // router.delete('/:productID', protect, deleteProduct);
 
 module.exports = router;   
