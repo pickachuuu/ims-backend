@@ -33,10 +33,34 @@ const createProduct = async (req, res) => {
 
 const removeProduct = async (req, res) => {
     try {
-        
-    } catch (error) {
+        const { productID } = req.params;
+        const businessID = req.user.businessID;
+        const product = await Product.findOne({
+            where: {
+                productID,
+                businessID
+            }
+        });
 
+        if (!product) {
+            return res.status(404).json({
+                message: 'Product not found'
+            });
+        } else {
+            await product.destroy();
+            return res.status(200).json({
+                message: 'Product deleted successfully'
+            });
+        }
+    } catch (error) {
+        console.error('Error deleting product:', error);
+        res.status(500).json({ message: 'Internal server error' }); 
     }
+}
+
+const removeProducts = async (req, res) => {
+    const { productIDs } = req.body;
+    const businessID = req.user.businessID;
 }
 
 const updateProduct = async (req, res) => {
@@ -49,5 +73,6 @@ const updateProduct = async (req, res) => {
 
 module.exports = {
     createProduct,
+    removeProduct,
     updateProduct,
 };
