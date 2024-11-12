@@ -65,11 +65,56 @@ const removeProducts = async (req, res) => {
 
 const updateProduct = async (req, res) => {
     try {
-        
+        const { productID } = req.params;
+        const { productName, quantity, price } = req.body;
+        const businessID = req.user.businessID;
+
+        const product = await Product.findOne({
+            where: { 
+                productID,
+                businessID 
+            }
+        });
+
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: 'Product not found'
+            });
+        }
+
+        const [updatedRows] = await product.update({
+            productName,
+            quantity,
+            price
+        });
+
+        if (updatedRows) {
+            const updatedProduct = await Product.findOne({
+                where: { productID, businessID }
+            });
+
+            return res.status(200).json({
+                success: true,
+                message: 'Product updated successfully',
+                product: updatedProduct
+            });
+        } else {
+            return res.status(400).json({
+                success: false,
+                message: 'Failed to update product'
+            });
+        }
+
     } catch (error) {
-        
+        console.error('Update error:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Error updating product',
+            error: error.message
+        });
     }
-}
+};
 
 module.exports = {
     createProduct,
