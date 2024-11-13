@@ -16,21 +16,21 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
-fs
-  .readdirSync(__dirname)
-  .filter(file => {
-    return (
-      file.indexOf('.') !== 0 &&
-      file !== basename &&
-      file.slice(-3) === '.js' &&
-      file.indexOf('.test.js') === -1
-    );
-  })
-  .forEach(file => {
-    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-    db[model.name] = model;
-  });
+// Define models manually
+const Business = require('./businessModel.js')(sequelize, Sequelize.DataTypes);
+const User = require('./userModel.js')(sequelize, Sequelize.DataTypes);
+const Product = require('./productModel.js')(sequelize, Sequelize.DataTypes);
+// const Category = require('./categoryModel.js')(sequelize, Sequelize.DataTypes);
+// const Supplier = require('./supplierModel.js')(sequelize, Sequelize.DataTypes);
 
+// Add models to db object
+db.Business = Business;
+db.User = User;
+db.Product = Product;
+// db.Category = Category;
+// db.Supplier = Supplier;
+
+// Set up associations
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
