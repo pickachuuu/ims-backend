@@ -21,14 +21,14 @@ const Business = require('./businessModel.js')(sequelize, Sequelize.DataTypes);
 const User = require('./userModel.js')(sequelize, Sequelize.DataTypes);
 const Product = require('./productModel.js')(sequelize, Sequelize.DataTypes);
 // const Category = require('./categoryModel.js')(sequelize, Sequelize.DataTypes);
-// const Supplier = require('./supplierModel.js')(sequelize, Sequelize.DataTypes);
+const Supplier = require('./supplierModel.js')(sequelize, Sequelize.DataTypes);
 
 // Add models to db object
 db.Business = Business;
 db.User = User;
 db.Product = Product;
 // db.Category = Category;
-// db.Supplier = Supplier;
+db.Supplier = Supplier;
 
 // Set up associations
 Object.keys(db).forEach(modelName => {
