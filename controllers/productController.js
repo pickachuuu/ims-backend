@@ -83,28 +83,18 @@ const updateProduct = async (req, res) => {
             });
         }
 
-        const [updatedRows] = await product.update({
+        const updatedProduct = await product.update({
             productName,
             quantity,
             price
         });
 
-        if (updatedRows) {
-            const updatedProduct = await Product.findOne({
-                where: { productID, businessID }
-            });
+        return res.status(200).json({
+            success: true,
+            message: 'Product updated successfully',
+            product: updatedProduct
+        });
 
-            return res.status(200).json({
-                success: true,
-                message: 'Product updated successfully',
-                product: updatedProduct
-            });
-        } else {
-            return res.status(400).json({
-                success: false,
-                message: 'Failed to update product'
-            });
-        }
 
     } catch (error) {
         console.error('Update error:', error);
