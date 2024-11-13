@@ -11,10 +11,10 @@ module.exports = (sequelize) => {
     //     foreignKey: 'businessID',
     //     as: 'categories'
     //   });
-    //   Business.hasMany(models.Supplier, {
-    //     foreignKey: 'businessID',
-    //     as: 'suppliers'
-    //   });
+      Business.hasMany(models.Supplier, {
+        foreignKey: 'businessID',
+        as: 'suppliers'
+      });
     }
   }
 
