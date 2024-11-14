@@ -1,4 +1,5 @@
 const { Product } = require('../models');
+const { Op } = require('sequelize')
 
 const createProduct = async (req, res) => {
     try {
@@ -133,9 +134,34 @@ const getProducts = async (req, res) => {
     }
 }
 
+const getLowStockProducts = async (req, res) => {
+    try {
+        const businessID = req.user.businessID;
+        const products = await Product.findAll({
+            where: { businessID, quantity: { [Op.lt]: 10 } },
+            attributes: ['productID', 'productName', 'quantity', 'price']
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: products.length === 0 ? "No low stock products found" : "Low stock products retrieved successfully",
+            products,
+            count: products.length
+        });
+
+    } catch (error) {
+        console.error('Error fetching low stock products:', error);
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
 module.exports = {
     createProduct,
     removeProduct,
     updateProduct,
     getProducts,
+    getLowStockProducts
 };
