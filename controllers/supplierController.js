@@ -36,11 +36,42 @@ const removeSupplier = async (req, res) => {
 }
 
 const updateSupplier = async (req, res) => {
+    try {
+        const { supplierID } = req.params;
+        const { supplierName, contactNo } = req.body;
+        const businessID = req.user.businessID;
+    
+        const supplier = await Supplier.findOne({
+            where: {supplierID, businessID }
+        });
+    
+        if (!supplier) {
+            return res.status(404).json({
+                message: "supplier not found"
+            });
+        }
 
+        const updatedSupplier = await supplier.update({
+            supplierName,
+            contactNo
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: 'Supplier updated successfully',
+            supplier: updatedSupplier
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
 }
 
 module.exports = {
     createSupplier,
     removeSupplier,
-    updateSupplier,
+    updateSupplier
 };
