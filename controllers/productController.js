@@ -106,8 +106,36 @@ const updateProduct = async (req, res) => {
     }
 };
 
+const getProducts = async (req, res) => {
+    try {
+        const businessID = req.user.businessID;
+        const products = await Product.findAll({
+            where: { businessID },
+            attributes: ['productID', 'productName', 'quantity', 'price'],
+        }); 
+
+        if (!products) {
+            return res.status(404).json({
+                message: "No products found"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            products
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
 module.exports = {
     createProduct,
     removeProduct,
     updateProduct,
+    getProducts,
 };
