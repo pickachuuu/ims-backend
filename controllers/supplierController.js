@@ -32,7 +32,32 @@ const createSupplier = async (req, res) => {
 }
 
 const removeSupplier = async (req, res) => {
+    try {
+        const { supplierID } = req.params;
+        const businessID = req.user.businessID; 
 
+        const removedSupplier = await Supplier.destroy({
+            where: { supplierID, businessID }
+        });
+
+        if (!removedSupplier) {
+            return res.status(404).json({
+                message: "supplier not found"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'Supplier removed successfully',
+            removedSupplier
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
 }
 
 const updateSupplier = async (req, res) => {
