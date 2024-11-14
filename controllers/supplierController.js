@@ -31,7 +31,7 @@ const createSupplier = async (req, res) => {
 
 }
 
-const removeSupplier = async (req, res) => {
+const deleteSupplier = async (req, res) => {
     try {
         const { supplierID } = req.params;
         const businessID = req.user.businessID; 
@@ -97,6 +97,6 @@ const updateSupplier = async (req, res) => {
 
 module.exports = {
     createSupplier,
-    removeSupplier,
+    deleteSupplier,
     updateSupplier
 };
