@@ -95,8 +95,38 @@ const updateSupplier = async (req, res) => {
     }
 }
 
+const getSuppliers = async (req, res) => {
+    try {
+        const businessID = req.user.businessID;
+        const suppliers = await Supplier.findAll({
+            where: { businessID },
+            attributes: ['supplierID', 'supplierName', 'contactNo'],  // Only these fields
+            order: [['supplierName', 'ASC']]  // Optional: sort by name
+        }); 
+
+        if (!suppliers || suppliers.length === 0) {  // Better empty check
+            return res.status(404).json({
+                success: false,
+                message: "No suppliers found"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            suppliers
+        });
+
+    } catch (error) {   
+        console.error('Error fetching suppliers:', error);  // Added logging
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
 module.exports = {
     createSupplier,
     deleteSupplier,
-    updateSupplier
+    updateSupplier,
+    getSuppliers
 };
