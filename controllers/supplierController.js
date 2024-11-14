@@ -100,11 +100,11 @@ const getSuppliers = async (req, res) => {
         const businessID = req.user.businessID;
         const suppliers = await Supplier.findAll({
             where: { businessID },
-            attributes: ['supplierID', 'supplierName', 'contactNo'],  // Only these fields
-            order: [['supplierName', 'ASC']]  // Optional: sort by name
+            attributes: ['supplierID', 'supplierName', 'contactNo'],
+            order: [['supplierName', 'ASC']]
         }); 
 
-        if (!suppliers || suppliers.length === 0) {  // Better empty check
+        if (!suppliers || suppliers.length === 0) {
             return res.status(404).json({
                 success: false,
                 message: "No suppliers found"
@@ -117,7 +117,7 @@ const getSuppliers = async (req, res) => {
         });
 
     } catch (error) {   
-        console.error('Error fetching suppliers:', error);  // Added logging
+        console.error('Error fetching suppliers:', error);
         return res.status(500).json({
             success: false,
             message: error.message
