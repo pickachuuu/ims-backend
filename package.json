@@ -6,7 +6,9 @@
   "scripts": {
     "migration:create": "npx sequelize-cli migration:generate --name",
     "migrate": "env-cmd -f .env npx sequelize-cli db:migrate",
-    "migrate:rollback": "env-cmd -f .env npx sequelize-cli db:migrate:undo"
+    "migrate:rollback": "env-cmd -f .env npx sequelize-cli db:migrate:undo",
+    "start": "nodemon app.js",
+    "dev": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
