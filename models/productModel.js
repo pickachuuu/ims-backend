@@ -9,10 +9,10 @@ module.exports = (sequelize) => {
                 as: 'business'
             });
 
-            // Product.belongsTo(models.Category, {
-            //     foreignKey: 'categoryID',
-            //     as: 'category'
-            // });
+            Product.belongsTo(models.Category, {
+                foreignKey: 'categoryID',
+                as: 'category'
+            });
 
             // Product.belongsTo(models.Supplier, {
             //     foreignKey: 'supplierID',
