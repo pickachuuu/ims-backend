@@ -7,10 +7,10 @@ module.exports = (sequelize) => {
         foreignKey: 'businessID',
         as: 'users'
       });
-    //   Business.hasMany(models.Category, {
-    //     foreignKey: 'businessID',
-    //     as: 'categories'
-    //   });
+      Business.hasMany(models.Category, {
+        foreignKey: 'businessID',
+        as: 'categories'
+      });
       Business.hasMany(models.Supplier, {
         foreignKey: 'businessID',
         as: 'suppliers'
