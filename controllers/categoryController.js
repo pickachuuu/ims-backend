@@ -35,7 +35,20 @@ const deleteCategory = async (req, res) => {
 }
 
 const updateCategory = async (req, res) => {
+    try {
+        const { categoryID } = req.params;
+        const { categoryName } = req.body;
+        const category = await Category.findByPk(categoryID);
 
+        if (!category) {
+            return res.status(404).json({ message: 'Category not found' });
+        }
+
+        await category.update({ categoryName });
+        res.status(200).json({ message: 'Category updated successfully', category });
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error' });
+    }
 }
 
 const getCategories = async (req, res) => {
