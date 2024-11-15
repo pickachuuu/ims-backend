@@ -11,13 +11,26 @@ const createCategory = async (req, res) => {
         }
 
         res.status(201).json({ message: 'Category created successfully', category });
-        
+
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
 
 const deleteCategory = async (req, res) => {
+    try {
+        const { categoryID } = req.params;
+        const category = await Category.findByPk(categoryID);
+
+        if (!category) {
+            return res.status(404).json({ message: 'Category not found' });
+        }
+
+        await category.destroy();
+        res.status(200).json({ message: 'Category deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error' });
+    }
 
 }
 
