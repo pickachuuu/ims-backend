@@ -51,15 +51,15 @@ const login = async (req, res) => {
         });
 
         if (!user) {
-            return res.status(401).json({ 
-                message: 'Invalid email or password' 
+            return res.status(404).json({ 
+                message: 'No account found with this email' 
             });
         }
 
         const isValidPassword = await validatePassword(password, user.password);
         if (!isValidPassword) {
             return res.status(401).json({ 
-                message: 'Invalid email or password' 
+                message: 'Incorrect password' 
             });
         }
 
