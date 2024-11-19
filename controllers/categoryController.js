@@ -52,7 +52,18 @@ const updateCategory = async (req, res) => {
 }
 
 const getCategories = async (req, res) => {
+    try {
+        const businessID = req.user.businessID;
+        const categories = await Category.findAll({ where: { businessID } });
 
+        if (!categories) {
+            return res.status(404).json({ message: 'No categories found' });
+        }
+
+        res.status(200).json({ categories });
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error' });
+    }
 }
 
 module.exports = {
