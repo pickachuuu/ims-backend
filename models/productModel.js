@@ -14,10 +14,10 @@ module.exports = (sequelize) => {
                 as: 'category'
             });
 
-            // Product.belongsTo(models.Supplier, {
-            //     foreignKey: 'supplierID',
-            //     as: 'supplier'
-            // });
+            Product.belongsTo(models.Supplier, {
+                foreignKey: 'supplierID',
+                as: 'supplier'
+            });
         }
     }
 
@@ -52,6 +52,22 @@ module.exports = (sequelize) => {
             references: {
                 model: 'businesses',
                 key: 'businessID'
+            }
+        },
+        categoryID: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            references: {
+                model: 'categories',
+                key: 'categoryID'
+            }
+        },
+        supplierID: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            references: {
+                model: 'suppliers',
+                key: 'supplier'
             }
         }
     }, {
