@@ -54,7 +54,63 @@ const createBusiness = async (req, res) => {
         });
     }
 };
+const editBusiness = async (req, res) => {
+    try {
+        console.log('Request body:', req.body);
+        const { businessName, address } = req.body;
+        const businessID = req.user.businessID;
+
+        if (!businessID) {
+            return res.status(400).json({
+                success: false,
+                message: 'No business associated with this user'
+            });
+        }
+
+        await Business.update(
+            { businessName, address },
+            { where: { businessID } }
+        );
+
+        const updatedBusiness = await Business.findByPk(businessID);
+
+        res.status(200).json({
+            success: true,
+            message: 'Business updated successfully',
+            business: updatedBusiness
+        });
+
+    } catch (error) {
+        console.error('Edit business error:', error);
+        res.status(400).json({
+            success: false,
+            message: 'Failed to edit business',
+            error: error.message
+        });
+    }
+};
+
+const updateBusiness = async () => {
+    const businessData = {
+        businessName: "New Business Name",
+        address: "New Address"
+    };
+
+    try {
+        const response = await axios.put('http://localhost:3000/api/business/edit', businessData, {
+            headers: {
+                Authorization: `Bearer ${token}` // Include the token if required
+            }
+        });
+
+        console.log(response.data);
+    } catch (error) {
+        console.error('Error updating business:', error.response.data);
+    }
+};
 
 module.exports = {
-    createBusiness
+    updateBusiness,
+    createBusiness,
+    editBusiness
 };

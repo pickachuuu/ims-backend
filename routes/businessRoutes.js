@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { createBusiness } = require('../controllers/businessController');
+const { createBusiness, editBusiness} = require('../controllers/businessController');
 const { protect } = require('../middlewares/authMiddleware');
 
-// Protected route
+// Protected routes
 router.post('/setup', protect, createBusiness);
+router.put('/edit', protect, editBusiness);
 
 module.exports = router;
