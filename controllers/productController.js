@@ -115,7 +115,7 @@ const getProducts = async (req, res) => {
         const businessID = req.user.businessID;
         const products = await Product.findAll({
             where: { businessID },
-            attributes: ['productID', 'productName', 'quantity', 'price'],
+            attributes: ['productID', 'productName', 'quantity', 'price', 'supplierID', 'categoryID'],
         }); 
 
         if (!products) {
