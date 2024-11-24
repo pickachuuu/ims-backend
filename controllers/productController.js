@@ -1,16 +1,19 @@
-const { Product } = require('../models');
+const { Product, Supplier } = require('../models');
 const { Op } = require('sequelize')
 
 const createProduct = async (req, res) => {
     try {
-        const { productName, quantity, price } = req.body;
+        const { productName, quantity, price, categoryID, supplierID } = req.body;
         const businessID = req.user.businessID;
+        console.log(categoryID, supplierID);
         
         const newProduct = await Product.create({
             productName,
             quantity,
             price,
-            businessID: businessID
+            businessID: businessID,
+            categoryID: categoryID || null,
+            supplierID: supplierID || null
         });
 
         console.log(newProduct);
