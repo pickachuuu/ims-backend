@@ -62,10 +62,37 @@ const removeProduct = async (req, res) => {
     }
 }
 
+
 const removeProducts = async (req, res) => {
-    const { productIDs } = req.body;
-    const businessID = req.user.businessID;
-}
+    try {
+        const { productIDs } = req.body; 
+        const businessID = req.user.businessID;
+
+        if (!Array.isArray(productIDs) || productIDs.length === 0) {
+            return res.status(400).json({ message: 'No product IDs provided' });
+        }
+
+        const deletedCount = await Product.destroy({
+            where: {
+                productID: {
+                    [Op.in]: productIDs
+                },
+                businessID: businessID 
+            }
+        });
+
+        if (deletedCount === 0) {
+            return res.status(404).json({ message: 'No products found to delete' });
+        }
+
+        return res.status(200).json({
+            message: `${deletedCount} product(s) deleted successfully`
+        });
+    } catch (error) {
+        console.error('Error deleting products:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
 
 const updateProduct = async (req, res) => {
     try {
@@ -164,6 +191,7 @@ const getLowStockProducts = async (req, res) => {
 module.exports = {
     createProduct,
     removeProduct,
+    removeProducts,
     updateProduct,
     getProducts,
     getLowStockProducts
