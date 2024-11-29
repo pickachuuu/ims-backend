@@ -65,7 +65,6 @@ const login = async (req, res) => {
 
         const token = jwt.sign(
             { 
-                name: user.last_name,
                 roleID: user.roleID,
                 userID: user.userID,
                 businessID: user.businessID
@@ -76,6 +75,7 @@ const login = async (req, res) => {
 
         res.status(200).json({
             message: 'Login successful',
+            user: user.first_name,
             token
         });
 

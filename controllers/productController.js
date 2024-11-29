@@ -1,16 +1,19 @@
-const { Product } = require('../models');
+const { Product, Supplier } = require('../models');
 const { Op } = require('sequelize')
 
 const createProduct = async (req, res) => {
     try {
-        const { productName, quantity, price } = req.body;
+        const { productName, quantity, price, categoryID, supplierID } = req.body;
         const businessID = req.user.businessID;
+        console.log(categoryID, supplierID);
         
         const newProduct = await Product.create({
             productName,
             quantity,
             price,
-            businessID: businessID
+            businessID: businessID,
+            categoryID: categoryID || null,
+            supplierID: supplierID || null
         });
 
         console.log(newProduct);
@@ -59,10 +62,37 @@ const removeProduct = async (req, res) => {
     }
 }
 
+
 const removeProducts = async (req, res) => {
-    const { productIDs } = req.body;
-    const businessID = req.user.businessID;
-}
+    try {
+        const { productIDs } = req.body; 
+        const businessID = req.user.businessID;
+
+        if (!Array.isArray(productIDs) || productIDs.length === 0) {
+            return res.status(400).json({ message: 'No product IDs provided' });
+        }
+
+        const deletedCount = await Product.destroy({
+            where: {
+                productID: {
+                    [Op.in]: productIDs
+                },
+                businessID: businessID 
+            }
+        });
+
+        if (deletedCount === 0) {
+            return res.status(404).json({ message: 'No products found to delete' });
+        }
+
+        return res.status(200).json({
+            message: `${deletedCount} product(s) deleted successfully`
+        });
+    } catch (error) {
+        console.error('Error deleting products:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
 
 const updateProduct = async (req, res) => {
     try {
@@ -112,7 +142,7 @@ const getProducts = async (req, res) => {
         const businessID = req.user.businessID;
         const products = await Product.findAll({
             where: { businessID },
-            attributes: ['productID', 'productName', 'quantity', 'price'],
+            attributes: ['productID', 'productName', 'quantity', 'price', 'supplierID', 'categoryID'],
         }); 
 
         if (!products) {
@@ -161,6 +191,7 @@ const getLowStockProducts = async (req, res) => {
 module.exports = {
     createProduct,
     removeProduct,
+    removeProducts,
     updateProduct,
     getProducts,
     getLowStockProducts

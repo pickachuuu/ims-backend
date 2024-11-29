@@ -95,7 +95,7 @@ const updateSupplier = async (req, res) => {
     }
 }
 
-const getSuppliers = async (req, res) => {
+    const getSuppliers = async (req, res) => {
     try {
         const businessID = req.user.businessID;
         const suppliers = await Supplier.findAll({
@@ -104,10 +104,11 @@ const getSuppliers = async (req, res) => {
             order: [['supplierName', 'ASC']]
         }); 
 
-        if (!suppliers || suppliers.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "No suppliers found"
+        if (!suppliers) {
+            return res.status(200).json({
+                success: true,
+                message: "No suppliers found",
+                suppliers: []
             });
         }
 
