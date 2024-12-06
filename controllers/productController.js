@@ -97,7 +97,7 @@ const removeProducts = async (req, res) => {
 const updateProduct = async (req, res) => {
     try {
         const { productID } = req.params;
-        const { productName, quantity, price } = req.body;
+        const { productName, quantity, price, supplierID, categoryID } = req.body;
         const businessID = req.user.businessID;
 
         const product = await Product.findOne({
@@ -117,7 +117,9 @@ const updateProduct = async (req, res) => {
         const updatedProduct = await product.update({
             productName,
             quantity,
-            price
+            price,
+            supplierID,
+            categoryID
         });
 
         return res.status(200).json({
