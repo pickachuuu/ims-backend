@@ -1,4 +1,5 @@
 const { Category } = require('../models');
+const { Op } = require('sequelize')
 
 const createCategory = async (req, res) => {
     try {
@@ -16,6 +17,39 @@ const createCategory = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
+
+const removeCategories = async (req, res) => {
+    try {
+        const { categoryIDs } = req.body; 
+        const businessID = req.user.businessID;
+
+        console.log(categoryIDs);
+
+        if (!Array.isArray(categoryIDs) || categoryIDs.length === 0) {
+            return res.status(400).json({ message: 'No category IDs provided' });
+        }
+
+        const deletedCount = await Category.destroy({
+            where: {
+                categoryID: {
+                    [Op.in]: categoryIDs
+                },
+                businessID: businessID 
+            }
+        });
+
+        if (deletedCount === 0) {
+            return res.status(404).json({ message: 'No categorys found to delete' });
+        }
+
+        return res.status(200).json({
+            message: `${deletedCount} category(s) deleted successfully`
+        });
+    } catch (error) {
+        console.error('Error deleting categorys:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
 
 const deleteCategory = async (req, res) => {
     try {
@@ -69,6 +103,7 @@ const getCategories = async (req, res) => {
 module.exports = {
     createCategory,
     deleteCategory,
+    removeCategories,
     updateCategory,
     getCategories
 }
