@@ -1,4 +1,5 @@
 const { Supplier } = require('../models');
+const { Op } = require('sequelize')
 
 const createSupplier = async (req, res) => {
     try{
@@ -59,6 +60,42 @@ const deleteSupplier = async (req, res) => {
         });
     }
 }
+
+const deleteSuppliers = async (req, res) => {
+    try {
+        const { supplierIDs } = req.body; 
+        const businessID = req.user.businessID;
+        
+        console.log( supplierIDs );
+
+        if (!Array.isArray(supplierIDs) || supplierIDs.length === 0) {
+            return res.status(400).json({ message: 'No supplier profile found provided' });
+        }
+
+        console.log("test")
+
+
+        const deletedCount = await Supplier.destroy({
+            where: {
+                supplierID: {
+                    [Op.in]: supplierIDs
+                },
+                businessID: businessID 
+            }
+        });
+
+        if (deletedCount === 0) {
+            return res.status(404).json({ message: 'No supplier profile found to delete' });
+        }
+
+        return res.status(200).json({
+            message: `${deletedCount} supplier profile(s) deleted successfully`
+        });
+    } catch (error) {
+        console.error('Error deleting supplier:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
 
 const updateSupplier = async (req, res) => {
     try {
@@ -128,6 +165,7 @@ const updateSupplier = async (req, res) => {
 module.exports = {
     createSupplier,
     deleteSupplier,
+    deleteSuppliers,
     updateSupplier,
     getSuppliers
 };
