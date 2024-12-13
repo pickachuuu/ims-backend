@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { User } = require('../models');
+const { Business, User } = require('../models');
 const { validatePassword } = require('../utils/passwordUtils');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
@@ -50,15 +50,21 @@ const login = async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await User.findOne({ 
-            where: { email }
+            where: { email },
+            include: [{
+                model: Business,
+                as: 'business',
+                attributes: ['businessName']
+            }]
         });
+
 
         if (!user) {
             return res.status(404).json({ 
                 message: 'No account found with this email' 
             });
         }
-
+        console.log(`hereee === ${user.business.businessName}`);
         const isValidPassword = await validatePassword(password, user.password);
         if (!isValidPassword) {
             return res.status(401).json({ 
@@ -70,7 +76,7 @@ const login = async (req, res) => {
             { 
                 roleID: user.roleID,
                 userID: user.userID,
-                businessID: user.businessID
+                businessID: user.businessID,
             },
             process.env.JWT_SECRET,
             { expiresIn: '1d' }
@@ -79,6 +85,7 @@ const login = async (req, res) => {
         res.status(200).json({
             message: 'Login successful',
             user: user.first_name,
+            business: user.business.businessName,
             token
         });
 
