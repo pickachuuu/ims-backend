@@ -58,13 +58,12 @@ const login = async (req, res) => {
             }]
         });
 
-
         if (!user) {
             return res.status(404).json({ 
                 message: 'No account found with this email' 
             });
         }
-        console.log(`hereee === ${user.business.businessName}`);
+
         const isValidPassword = await validatePassword(password, user.password);
         if (!isValidPassword) {
             return res.status(401).json({ 
@@ -76,16 +75,18 @@ const login = async (req, res) => {
             { 
                 roleID: user.roleID,
                 userID: user.userID,
-                businessID: user.businessID,
+                businessID: user.businessID || null,
             },
             process.env.JWT_SECRET,
             { expiresIn: '1d' }
         );
 
+        const businessName = user.business ? user.business.businessName : null;
+
         res.status(200).json({
             message: 'Login successful',
             user: user.first_name,
-            business: user.business.businessName,
+            business: businessName,
             token
         });
 
