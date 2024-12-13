@@ -1,7 +1,6 @@
 {
   "name": "ims-backend",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "migration:create": "npx sequelize-cli migration:generate --name",
@@ -33,5 +32,6 @@
     "globals": "^15.12.0",
     "nodemon": "^3.1.7",
     "prettier": "^3.3.3"
-  }
+  },
+  "description": ""
 }
