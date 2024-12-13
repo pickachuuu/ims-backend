@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const { hashPassword } = require('../utils/passwordUtils');
+const { Op } = require('sequelize');
 
 const register = async (req, res) => {
     try{
@@ -162,9 +163,58 @@ const resetPassword = async (req, res) => {
     }
 };
 
+const getProfile = async (req, res) => {
+    try {
+        console.log('User ID from request:', req.user.userID); // Debug log
+
+        const user = await User.findOne({
+            where: { userID: req.user.userID },
+            include: [{
+                model: Business,
+                as: 'business',
+                attributes: ['businessName', 'address', 'businessEmail', 'phone']
+            }],
+            attributes: ['first_name', 'last_name', 'email']
+        });
+
+        console.log('Found user:', user); // Debug log
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const response = {
+            user: {
+                name: `${user.first_name} ${user.last_name}`,
+                email: user.email,
+                business: user.business ? {
+                    businessName: user.business.businessName,
+                    address: user.business.address,
+                    businessEmail: user.business.businessEmail,
+                    phone: user.business.phone
+                } : null
+            }
+        };
+
+        console.log('Response being sent:', response); // Debug log
+        res.status(200).json(response);
+    } catch (error) {
+        console.error('Detailed error in getProfile:', {
+            message: error.message,
+            stack: error.stack,
+            user: req.user
+        });
+        res.status(500).json({ 
+            message: 'Internal server error',
+            details: error.message // Adding error details for debugging
+        });
+    }
+};
+
 module.exports = {
     register,
     login,
     forgotPassword,
     resetPassword,
+    getProfile
 };
