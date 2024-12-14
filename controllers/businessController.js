@@ -54,6 +54,7 @@ const createBusiness = async (req, res) => {
         });
     }
 };
+
 const editBusiness = async (req, res) => {
     try {
         console.log('Request body:', req.body);
@@ -90,7 +91,36 @@ const editBusiness = async (req, res) => {
     }
 };
 
+const getBusinessProfile = async (req, res) => {
+    try{
+        const businessID = req.user.businessID;
+        if (!businessID) {
+            return res.status(404).json({
+                sucess: false,
+                message: 'Business profile not found'
+            });
+        }
+
+        const business = await Business.findByPk(businessID);
+
+        res.status(200).json({
+            sucess: true,
+            message: 'Business profile sucessfuly retrieved',
+            businessData: business
+        })
+    } catch (error){
+        console.error('Edit business error:', error);
+        res.status(400).json({
+            success: false,
+            message: 'Failed to retrieve business',
+            error: error.message
+        });
+
+    }
+}
+
 module.exports = {
     createBusiness,
-    editBusiness
+    editBusiness,
+    getBusinessProfile
 };
