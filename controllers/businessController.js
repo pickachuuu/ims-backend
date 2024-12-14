@@ -90,27 +90,7 @@ const editBusiness = async (req, res) => {
     }
 };
 
-const updateBusiness = async () => {
-    const businessData = {
-        businessName: "New Business Name",
-        address: "New Address"
-    };
-
-    try {
-        const response = await axios.put('http://localhost:3000/api/business/edit', businessData, {
-            headers: {
-                Authorization: `Bearer ${token}` // Include the token if required
-            }
-        });
-
-        console.log(response.data);
-    } catch (error) {
-        console.error('Error updating business:', error.response.data);
-    }
-};
-
 module.exports = {
-    updateBusiness,
     createBusiness,
     editBusiness
 };
