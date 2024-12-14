@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Business, User } = require('../models');
+const { Business, User, sequelize } = require('../models'); // Import sequelize here
 const { validatePassword } = require('../utils/passwordUtils');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
@@ -165,7 +165,6 @@ const resetPassword = async (req, res) => {
 
 const getProfile = async (req, res) => {
     try {
-        console.log('User ID from request:', req.user.userID); // Debug log
 
         const user = await User.findOne({
             where: { userID: req.user.userID },
@@ -185,6 +184,7 @@ const getProfile = async (req, res) => {
 
         const response = {
             user: {
+                ID: user.userID,
                 firstName: user.first_name,
                 lastName: user.last_name,
                 name: `${user.first_name} ${user.last_name}`,
@@ -213,10 +213,79 @@ const getProfile = async (req, res) => {
     }
 };
 
+const updateUser = async (req, res) => {
+    const t = await sequelize.transaction();
+
+    try {
+        const userId = req.user.userID;
+        const { firstName, lastName, email, businessName, address, businessEmail } = req.body;
+        
+        console.log('Request body:', req.body);
+
+        // Update user fields if any are provided
+        if (firstName || lastName || email) {
+            const updateFields = {};
+            if (firstName) updateFields.first_name = firstName;
+            if (lastName) updateFields.last_name = lastName;
+            if (email) updateFields.email = email;
+
+            await User.update(
+                updateFields,
+                { 
+                    where: { userID: userId },
+                    transaction: t
+                }
+            );
+        }
+
+        // Update business fields if any are provided and businessID exists
+        if (req.user.businessID && (businessName || address || businessEmail)) {
+            const updateFields = {};
+            if (businessName) updateFields.business_name = businessName;
+            if (address) updateFields.address = address;
+            if (businessEmail) updateFields.business_email = businessEmail;
+
+            await Business.update(
+                updateFields,
+                { 
+                    where: { businessID: req.user.businessID },
+                    transaction: t
+                }
+            );
+        }
+
+        await t.commit();
+        return res.status(200).json({ 
+            message: 'Profile updated successfully',
+            data: {
+                user: firstName || lastName || email ? {
+                    ...(firstName && { firstName }),
+                    ...(lastName && { lastName }),
+                    ...(email && { email })
+                } : null,
+                business: businessName || address || businessEmail ? {
+                    ...(businessName && { businessName }),
+                    ...(address && { address }),
+                    ...(businessEmail && { businessEmail })
+                } : null
+            }
+        });
+
+    } catch (error) {
+        await t.rollback();
+        console.error('Error in updateUser:', error);
+        return res.status(500).json({ 
+            message: 'Internal server error',
+            error: error.message
+        });
+    }
+};
+
 module.exports = {
     register,
     login,
     forgotPassword,
     resetPassword,
-    getProfile
+    getProfile,
+    updateUser
 };
