@@ -174,10 +174,10 @@ const getProfile = async (req, res) => {
                 as: 'business',
                 attributes: ['businessName', 'address', 'businessEmail', 'phone']
             }],
-            attributes: ['first_name', 'last_name', 'email']
+
         });
 
-        console.log('Found user:', user); // Debug log
+        console.log('Found user:', user);
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
@@ -185,6 +185,8 @@ const getProfile = async (req, res) => {
 
         const response = {
             user: {
+                firstName: user.first_name,
+                lastName: user.last_name,
                 name: `${user.first_name} ${user.last_name}`,
                 email: user.email,
                 business: user.business ? {
