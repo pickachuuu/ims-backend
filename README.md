@@ -89,15 +89,12 @@ Before you begin, ensure you have the following installed:
 
 ## Features
 
-- **User Authentication**: Secure login and registration process for users, ensuring that only authorized personnel can access the system.
-- **Business Profile Management**: Users can create and manage their business profiles, including details like business name, address, and contact information.
-- **Product Management**: Add, update, and delete products in the inventory, with options to track stock levels and product details.
-- **Category Management**: Organize products into categories for easier navigation and management.
-- **Supplier Management**: Maintain a list of suppliers, including contact information and product offerings.
-- **Low Stock Alerts**: Receive notifications when stock levels fall below a specified threshold, helping to prevent stockouts.
-- **Dashboard Analytics**: Visualize key metrics and analytics related to inventory, sales, and supplier performance through an interactive dashboard.
-- **Responsive Design**: The application is designed to work seamlessly on various devices, including desktops, tablets, and smartphones.
-- **PDF Report Generation**: Generate detailed PDF reports for inventory, sales, and supplier data, allowing for easy sharing and printing of important information.
+- **User Authentication and Business Profile Setup**: Secure login and registration process, allowing users to set up and manage their business profiles.
+- **Inventory Management**: Add, update, and delete inventory items to keep track of stock levels effectively.
+- **Low Stock Notifications**: Implement a function to notify users when stock levels fall below a certain threshold.
+- **Supplier Management**: Link suppliers to products, maintaining a comprehensive list of suppliers and their offerings.
+- **Stock Level Tracking**: Monitor inventory status in real-time to ensure optimal stock levels.
+- **Report Generation**: Generate detailed reports for inventory, suppliers, and stock levels, facilitating easy analysis and sharing of important data.
 
 ## Customization
 
