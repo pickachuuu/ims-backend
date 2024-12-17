@@ -89,14 +89,15 @@ Before you begin, ensure you have the following installed:
 
 ## Features
 
-- User Authentication
-- Business Profile Management
-- Product Management
-- Category Management
-- Supplier Management
-- Low Stock Alerts
-- Dashboard Analytics
-- Responsive Design
+- **User Authentication**: Secure login and registration process for users, ensuring that only authorized personnel can access the system.
+- **Business Profile Management**: Users can create and manage their business profiles, including details like business name, address, and contact information.
+- **Product Management**: Add, update, and delete products in the inventory, with options to track stock levels and product details.
+- **Category Management**: Organize products into categories for easier navigation and management.
+- **Supplier Management**: Maintain a list of suppliers, including contact information and product offerings.
+- **Low Stock Alerts**: Receive notifications when stock levels fall below a specified threshold, helping to prevent stockouts.
+- **Dashboard Analytics**: Visualize key metrics and analytics related to inventory, sales, and supplier performance through an interactive dashboard.
+- **Responsive Design**: The application is designed to work seamlessly on various devices, including desktops, tablets, and smartphones.
+- **PDF Report Generation**: Generate detailed PDF reports for inventory, sales, and supplier data, allowing for easy sharing and printing of important information.
 
 ## Customization
 
@@ -123,3 +124,8 @@ To disable the animations in the application:
 - JWT Authentication
 - Express Middleware
 - Node.js
+
+## Pages Demo
+![recording (7)](https://github.com/user-attachments/assets/d5da8389-beb0-4623-9510-d134681221ba)
+
+
