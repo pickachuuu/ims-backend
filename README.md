@@ -98,6 +98,14 @@ Before you begin, ensure you have the following installed:
 - Dashboard Analytics
 - Responsive Design
 
+## Customization
+
+### Disabling Animations
+To disable the animations in the application:
+1. Open `src/pages/HomePage.jsx`
+2. Locate the animation section (around lines 120-150)
+3. Comment out the animation code block to disable all animations
+
 ## Tech Stack
 
 ### Frontend
