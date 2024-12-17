@@ -123,6 +123,6 @@ To disable the animations in the application:
 - Node.js
 
 ## Pages Demo
-![recording (7)](https://github.com/user-attachments/assets/d5da8389-beb0-4623-9510-d134681221ba)
+![recording (8)](https://github.com/user-attachments/assets/b73650e5-7d42-4ce7-bafc-bc38ac8cfd96)
 
 
